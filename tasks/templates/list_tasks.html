@@ -1,0 +1,30 @@
+{% extends './base.html'%}
+{% block content%}
+<h1 class="text-center text-danger">Tasks</h1>
+    <form action="{% url 'create_task'%}" method="post" class=" m-auto card bg-transparent border-0 card-body col-md-4">
+        {% csrf_token %}
+        <div class="form-group mb-3">
+            <input type="text" class="form-control bg-transparent text-danger fw-bold" name="task-name" id="task-name" placeholder="Enter Task Name">
+        </div>
+        <div class="form-group mb-3">
+            <textarea id="task-description" class="form-control bg-transparent text-secondary" name="task-description" rows="10" placeholder="Enter Task Description"></textarea>
+        </div>
+        <button class="btn btn-danger fw-bold rounded shadow btn-lg">Save Task</button>
+    </form>
+    {% for task in tasks %}
+    <div class="m-auto row col-md-4 py-3 mb-3 bg-transparent border border-light rounded shadow">
+        <section class="col-md-8"> 
+            <h4 class="text-center fw-bold text-danger">⏱️{{task.title}}</h4>
+            <p class="text-center text-secondary">{{task.description}}</p>
+        </section>
+        <form action="{% url 'delete_task' task.id %}" method="post" class="d-flex justify-content-center align-items-center col-md-4">
+            {% csrf_token %}
+            <button class="btn btn-danger rounded shadow btn-md">
+                Delete
+            </button>
+        </form>
+    </div>
+    {% empty %}
+    <div class="alert alert-danger text-center col-md-6 m-auto">we dont have tasks for show in the database</div>
+    {% endfor %}
+{% endblock %}
